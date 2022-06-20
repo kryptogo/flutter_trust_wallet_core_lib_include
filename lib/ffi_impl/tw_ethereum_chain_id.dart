@@ -13,4 +13,5 @@ abstract class TWEthereumChainID {
   static const int TWEthereumChainIDBinanceSmartChain = 56;
   static const int TWEthereumChainIDPolygon = 137;
   static const int TWEthereumChainIDWanchain = 888;
+  static const int TWEthereumChainIDKcc = 321;
 }
