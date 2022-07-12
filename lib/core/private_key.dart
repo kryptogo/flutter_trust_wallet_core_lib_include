@@ -1,13 +1,15 @@
 part of flutter_trust_wallet_core;
 
 class PrivateKey {
-
   static const int PrivateKeySize = 32;
 
   late Pointer<Void> _nativehandle;
+  Pointer<Void> get nativehandle => _nativehandle;
 
   static bool isValid(Uint8List data, int curve) {
-    return TWPrivateKeyImpl.isValid(TWData.TWDataCreateWithBytes(data.toPointerUint8(), data.length), curve);
+    return TWPrivateKeyImpl.isValid(
+        TWData.TWDataCreateWithBytes(data.toPointerUint8(), data.length),
+        curve);
   }
 
   PrivateKey._(Pointer<Void> pointer) {
@@ -16,17 +18,20 @@ class PrivateKey {
 
   PrivateKey() {
     _nativehandle = TWPrivateKeyImpl.create();
-    if (_nativehandle.hashCode == 0) throw Exception(["PrivateKey nativehandle is null"]);
+    if (_nativehandle.hashCode == 0)
+      throw Exception(["PrivateKey nativehandle is null"]);
   }
 
   PrivateKey.createWithData(Uint8List bytes) {
     _nativehandle = TWPrivateKeyImpl.createWithData(bytes);
-    if (_nativehandle.hashCode == 0) throw Exception(["PrivateKey nativehandle is null"]);
+    if (_nativehandle.hashCode == 0)
+      throw Exception(["PrivateKey nativehandle is null"]);
   }
 
   PrivateKey.createCopy(Pointer<Void> key) {
     _nativehandle = TWPrivateKeyImpl.createCopy(key);
-    if (_nativehandle.hashCode == 0) throw Exception(["PrivateKey nativehandle is null"]);
+    if (_nativehandle.hashCode == 0)
+      throw Exception(["PrivateKey nativehandle is null"]);
   }
 
   Uint8List data() {
@@ -54,7 +59,8 @@ class PrivateKey {
   }
 
   PublicKey getPublicKeySecp256k1(bool compressed) {
-    final data = TWPrivateKeyImpl.getPublicKeySecp256k1(_nativehandle, compressed);
+    final data =
+        TWPrivateKeyImpl.getPublicKeySecp256k1(_nativehandle, compressed);
     return PublicKey._(data);
   }
 
@@ -74,7 +80,8 @@ class PrivateKey {
   }
 
   PublicKey getPublicKeyNistEd25519Extended() {
-    final data = TWPrivateKeyImpl.getPublicKeyNistEd25519Extended(_nativehandle);
+    final data =
+        TWPrivateKeyImpl.getPublicKeyNistEd25519Extended(_nativehandle);
     return PublicKey._(data);
   }
 
@@ -84,12 +91,14 @@ class PrivateKey {
   }
 
   PublicKey getShareKey(PublicKey publicKey, int curve) {
-    final data = TWPrivateKeyImpl.getShareKey(_nativehandle, publicKey.pointer, curve);
+    final data =
+        TWPrivateKeyImpl.getShareKey(_nativehandle, publicKey.pointer, curve);
     return PublicKey._(data);
   }
 
   Uint8List sign(Uint8List digest, int curve) {
-    final digestPoint = TWData.TWDataCreateWithBytes(digest.toPointerUint8(), digest.length);
+    final digestPoint =
+        TWData.TWDataCreateWithBytes(digest.toPointerUint8(), digest.length);
     final data = TWPrivateKeyImpl.sign(_nativehandle, digestPoint, curve);
     final res = TWData.TWDataBytes(data).asTypedList(TWData.TWDataSize(data));
     TWData.TWDataDelete(digestPoint);
@@ -97,7 +106,8 @@ class PrivateKey {
   }
 
   Uint8List signAsDER(Uint8List digest, int curve) {
-    final digestPoint = TWData.TWDataCreateWithBytes(digest.toPointerUint8(), digest.length);
+    final digestPoint =
+        TWData.TWDataCreateWithBytes(digest.toPointerUint8(), digest.length);
     final data = TWPrivateKeyImpl.signAsDER(_nativehandle, digestPoint, curve);
     final res = TWData.TWDataBytes(data).asTypedList(TWData.TWDataSize(data));
     TWData.TWDataDelete(digestPoint);
@@ -105,8 +115,10 @@ class PrivateKey {
   }
 
   Uint8List signSchnorr(Uint8List digest, int curve) {
-    final digestPoint = TWData.TWDataCreateWithBytes(digest.toPointerUint8(), digest.length);
-    final data = TWPrivateKeyImpl.signSchnorr(_nativehandle, digestPoint, curve);
+    final digestPoint =
+        TWData.TWDataCreateWithBytes(digest.toPointerUint8(), digest.length);
+    final data =
+        TWPrivateKeyImpl.signSchnorr(_nativehandle, digestPoint, curve);
     final res = TWData.TWDataBytes(data).asTypedList(TWData.TWDataSize(data));
     TWData.TWDataDelete(digestPoint);
     return res;
